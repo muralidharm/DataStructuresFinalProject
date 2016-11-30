@@ -64,6 +64,7 @@ class HashTable{
 template <class K, class V>
 HashNode<K,V>::HashNode()
 {
+
 }
 
 template <class K, class V>
@@ -105,16 +106,20 @@ HashTable<K,V>::HashTable(HashTable<K,V>& rhs)        //copy constructor
 template <class K, class V>
 int HashTable<K,V>::hashFunc(int k)              //assumes int key
 {
+    hash<int> H;
+    int kHash = H(k);
     int size = TABLE_SIZE;
     return (k%size);
 }
 
 template <class K, class V>
-int HashTable<K,V>::hashFunc(String k)              //assumes String key, uses size
+int HashTable<K,V>::hashFunc(String k)              //assumes String key
 {
-    int kSize = k.size();
+    char* kChar = k.data;
+    hash<char*> H;
+    int kHash = H(kChar);
     int size = TABLE_SIZE;
-    return (kSize%size);
+    return (kHash%size);
 }
 
 template <class K, class V>
