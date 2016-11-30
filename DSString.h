@@ -33,9 +33,11 @@ class String{
         friend std::ostream& operator<< (std::ostream&, const String&);
         friend std::istream& operator>> (std::istream&, String&);
 
+        char* data;
+    
         ~String();
     private:
-        char* data;
+    
         void clear();
 };
 
