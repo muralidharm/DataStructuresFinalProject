@@ -13,5 +13,6 @@ HEADERS += \
     vector.h \
     grader.h \
     linkedlist.h \
-    stack.h
+    stack.h \
+    hashtable.h
 
