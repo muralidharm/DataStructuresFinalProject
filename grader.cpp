@@ -4,9 +4,9 @@
 #include "stack.h"
 Grader::Grader()
 {
-    score = 0;
     mainlines = 0;
     codelines = 0;
+    conditionRepetition = 0;
 }
 void Grader::getLines(std::ifstream& input, String name)
 {
@@ -29,8 +29,9 @@ void Grader::getLines(std::ifstream& input, String name)
         }
         if (reader.spaceInstance() == 1 && !reader.containsChar('=') && reader.firstChar() != '#' && name == "main.cpp")
             variableParse(reader);
-        conditionParse(reader);
+        //conditionParse(reader);
         newVector.add(reader);
+        findRepetition(reader);
         if (name == "main.cpp")
             mainlines++;
         codelines++;
@@ -48,7 +49,7 @@ void Grader::variableParse(String var)
         }
     }
 }
-void Grader::conditionParse(String cond)
+/*void Grader::conditionParse(String cond)
 {
     if(cond.substring(0,3) == "for")
         conditionHash.addNode("for", cond);
@@ -56,8 +57,33 @@ void Grader::conditionParse(String cond)
         conditionHash.addNode("if", cond);
     if(cond.substring(0,5) == "while")
         conditionHash.addNode("while", cond);
-    if(cond.substring(0,4) == "else")
-        conditionHash.addNode("else", cond);
+    if(cond.substring(0,7) == "else if")
+        conditionHash.addNode("else if", cond);
+}*/
+void Grader::findRepetition(String s)
+{
+    String pop;
+    Vector<String> stringVector;
+    if (s.containsChar('{'))
+        functionStack.push(s);
+    if (!functionStack.isEmpty())
+        functionStack.push(s);
+    if (s.containsChar('}'))
+    {
+        while(!functionStack.peek().containsChar('{'))
+        {
+           pop = functionStack.pop();
+           if (stringVector.contains(pop) && isControlStatement(pop))
+               conditionRepetition++;
+           else
+               stringVector.add(pop);
+        }
+    }
+
+}
+bool Grader::isControlStatement(String var)
+{
+   return( var.substring(0,2) == "if" || var.substring(0,3) == "for" || var.substring(0, 5) == "while" || var.substring(0,5) == "switch");
 }
 
 void Grader::metric1()
@@ -77,7 +103,7 @@ void Grader::metric1()
         }
         charscore += (exceedschars/linecount)*20;
     }
-    score += (charscore/filecount);
+    scores.add(charscore/filecount);
 }
 void Grader::metric2()
 {
@@ -101,7 +127,7 @@ void Grader::metric2()
             if (commentStack.size() > 10 && commentScore < 20)
                 commentScore += .05;
         }
-        score += ((int)commentScore)/filecount;
+        scores.add((int)commentScore/filecount);
     }
 }
 void Grader::metric3()
@@ -110,12 +136,11 @@ void Grader::metric3()
     //float mainscore = 500*(float)hash.returnList("main.cpp").size()/(float)hash.countersize();
     float mainscore = 500*((float)mainlines/(float)codelines);
     if (mainscore <= 20)
-        score += mainscore;
+        scores.add(mainscore);
     else
-        score += 20;
+        scores.add(20);
 }
-
 int Grader::getscore()
 {
-    return score;
+    return scores[0];
 }
