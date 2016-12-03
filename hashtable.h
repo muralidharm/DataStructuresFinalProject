@@ -145,6 +145,13 @@ void HashTable<K,V>::addNode(K key, V value)
     HashNode<K,V> entry(key, value);
     K rhsK = entry.getKey();
     int hashValue = hashFunc(rhsK);
+    int keysize = nodes[hashValue].size();
+    for(int i = 0; i < keysize; i++)
+    {
+        if (nodes[hashValue].get(i).getValue() == value)
+            repetition++;
+        break;
+    }
     nodes[hashValue].add(entry);
     counter++;
 }
