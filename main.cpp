@@ -12,12 +12,15 @@ int main(int argc, char* const argv[] )
     struct dirent *ent;
     char c;
     Grader grader;
-    if ((dir = opendir ("/home/ds/workspace/AutoIndexer")) != NULL) {
+    String path = "//home/ds/workspace/FlightPlanner";
+    if ((dir = opendir ("/home/ds/workspace/FlightPlanner")) != NULL) {
       while ((ent = readdir (dir)) != NULL) {
         c = ent->d_name[strlen(ent->d_name)-1];
+        String tempString = path + "/" + String(ent->d_name);
         if( c == 'h' || c == 'p' )
         {
-            ifstream pathstream(ent->d_name);
+            //std::cout << ent->d_name << std::endl;
+            ifstream pathstream(tempString.c_str());
             if (!pathstream.is_open())
                 cerr << "Couldn't open file." << endl;
             String name = ent->d_name;

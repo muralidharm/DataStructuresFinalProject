@@ -57,6 +57,7 @@ class HashTable{
         HashTable(HashTable&);
         Vector<LinkedList<HashNode<K,V>>> nodes;
         int counter;
+        int repetition;
 
 };
 
@@ -91,6 +92,7 @@ template <class K, class V>
 HashTable<K,V>::HashTable()
 {
     counter = 0;
+    repetition = 0;
 }
 
 //WRONG
@@ -116,8 +118,13 @@ int HashTable<K,V>::hashFunc(int k)              //assumes int key
 template <class K, class V>
 int HashTable<K,V>::hashFunc(String k)              //assumes String key
 {
-    char* kChar = k.data;
-    hash<char*> H;
+    int kChar = 0;
+    int keysize = k.size();
+    for (int i = 0; i < keysize; i++)
+    {
+        kChar += (int)k.data[i];
+    }
+    hash<int> H;
     int kHash = H(kChar);
     int size = TABLE_SIZE;
     return (kHash%size);
@@ -148,8 +155,11 @@ LinkedList<HashNode<K,V>>& HashTable<K,V>::returnList(K rhs)
 {
     for (int i=0; i<nodes.size(); i++)
     {
-        if (nodes[i].get(0).getKey()==rhs)
-            return nodes[i];
+        if(!nodes[i].isEmpty())
+        {
+            if (nodes[i].get(0).getKey()==rhs)
+                return nodes[i];
+        }
     }
 }
 

@@ -196,32 +196,47 @@ bool String::isLowerString() //Returns true if every character in the string is 
     }
     return true;
 }
-bool String::containsString(const String& s) //Check if a String contains another String
+bool String::containsChar(const char c) //Check if a String contains another String
 {
-    int counter = 0;
     int length1 = (int)strlen(data);
-    int length2 = (int)strlen(s.data);
     for (int i = 0; i < length1; i++)
     {
-        if (data[i] == s.data[0])
-        {
-            counter = i;
-            while (data[counter] == data[counter])
-            {
-                counter += 1;
-                if (counter == length2)
-                {
-                    return true;
-                }
-            }
-            counter = 0;
-        }
+        if(data[i] == c)
+            return true;
     }
     return false;
 }
 char String::firstChar() //Returns the first character of a string- I'm using this for formatting the contents of the output file
 {
     return data[0];
+}
+int String::spaceInstance()
+{
+    int space = 0;
+    int length = (int)strlen(data);
+    for (int i = 0; i < length; i++)
+    {
+        if(data[i] == 32)
+            space++;
+    }
+    return space;
+}
+String String::secondWord()
+{
+    int length = strlen(data);
+    int newsize = 0;
+    for (int i = 0; i < length; i++)
+    {
+        newsize++;
+        if (data[i] == 32)
+            break;
+    }
+    String newstring;
+    if (data[length-1] == ';')
+        newstring = substring(newsize, length-1);
+    else
+        newstring = substring(newsize, length);
+    return newstring;
 }
 //Removes punctuation from a string.  It's poorly written but mostly does its job.
 String String::removePunctuation()

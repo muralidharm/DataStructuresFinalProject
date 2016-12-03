@@ -13,23 +13,51 @@ void Grader::getLines(std::ifstream& input, String name)
     String reader;
     String temp;
     Vector<String> newVector;
+    newVector.add(name);
     while(input.peek() != EOF)
     {
         input >> reader;
         while (input.peek() != 10 && input.peek() != EOF)
         {
-            reader = reader + " ";
             input >> temp;
+            if (temp.containsChar('=') && name == "main.cpp")
+            {
+                variableParse(reader);
+            }
+            reader = reader + " ";
             reader = reader + temp;
         }
+        if (reader.spaceInstance() == 1 && !reader.containsChar('=') && reader.firstChar() != '#' && name == "main.cpp")
+            variableParse(reader);
+        conditionParse(reader);
         newVector.add(reader);
-        hash.addNode(name, reader);
-        if(name == "main.cpp")
+        if (name == "main.cpp")
             mainlines++;
-        else
-            codelines++;
+        codelines++;
     }
     files.add(newVector);
+}
+void Grader::variableParse(String var)
+{
+    if(!(var.substring(0,2) == "if" || var.substring(0,3) == "for" || var.substring(0, 5) == "while" || var.substring(0,2) == "//" || var.substring(0,6) == "return"))
+    {
+        if (var.containsChar(32) && !var.containsChar('.'))
+        {
+            //std::cout << var.secondWord() << std::endl;
+            tree.insert(var.secondWord());
+        }
+    }
+}
+void Grader::conditionParse(String cond)
+{
+    if(cond.substring(0,3) == "for")
+        conditionHash.addNode("for", cond);
+    if(cond.substring(0,2) == "if")
+        conditionHash.addNode("if", cond);
+    if(cond.substring(0,5) == "while")
+        conditionHash.addNode("while", cond);
+    if(cond.substring(0,4) == "else")
+        conditionHash.addNode("else", cond);
 }
 
 void Grader::metric1()
@@ -79,7 +107,8 @@ void Grader::metric2()
 void Grader::metric3()
 {
     //int hashmain = hash.returnList("main.cpp").size();
-    float mainscore = 500*(float)hash.returnList("main.cpp").size()/(float)hash.countersize();
+    //float mainscore = 500*(float)hash.returnList("main.cpp").size()/(float)hash.countersize();
+    float mainscore = 500*((float)mainlines/(float)codelines);
     if (mainscore <= 20)
         score += mainscore;
     else
