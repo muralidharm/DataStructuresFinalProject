@@ -28,9 +28,11 @@ int main(int argc, char* const argv[] )
             pathstream.close();
         }
       }
-      //grader.metric1();
-      //grader.metric2();
+      grader.metric1();
+      grader.metric2();
       grader.metric3();
+      grader.metric4();
+      grader.metric5();
       std::cout << 100-grader.getscore() << std::endl;
       closedir (dir);
     } else {

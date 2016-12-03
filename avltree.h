@@ -1,7 +1,9 @@
 #ifndef AVLTREE
 #define AVLTREE
 //template<class T>
+#include <typeinfo>
 #include "exception"
+#include "DSString.h"
 template<class T>
 class AvlTree
 {
@@ -13,8 +15,8 @@ private:
         AvlNode *left;
         AvlNode *right;
         int height;
-
-        AvlNode(const T & theElement, AvlNode *lt, AvlNode *rt, int h = 0) : element(theElement), left(lt), right(rt), height(h) {}
+        int instance;
+        AvlNode(const T & theElement, AvlNode *lt, AvlNode *rt, int h = 0, int i = 0) : element(theElement), left(lt), right(rt), height(h), instance(i) {}
     };
     AvlNode *root;
 public:
@@ -61,6 +63,15 @@ public:
     {
         return inTree(object, root);
     }
+    bool inTreeString(String object)
+    {
+        return inTreeString(object, root);
+    }
+    int zeroInstance()
+    {
+        return zeroInstance(root);
+    }
+
     //Returns reference to object in tree
     T& get(T object)
     {
@@ -157,12 +168,37 @@ private:
         else
             return findMax(node->right);
     }
+
+    bool inTreeString(String object, AvlNode* node)
+    {
+        if (node == nullptr)
+            return false;
+        else if (typeid(T) == typeid(String))
+        {
+            if (object.containsString(node->element))
+                node->instance++;
+            else
+                return(inTreeString(object,node->left) && inTreeString(object, node->right));
+        }
+    }
+    int zeroInstance(AvlNode * node)
+    {
+        if (node == nullptr)
+            return 0;
+        else if (node->instance == 0)
+            return 1 + zeroInstance(node->left) + zeroInstance(node->right);
+        else
+            return 0 + zeroInstance(node->left) + zeroInstance(node->right);
+    }
+
     bool inTree(T object, AvlNode * node)
     {
         if (node == nullptr)
             return false;
         else if (node->element == object)
+        {
             return true;
+        }
         else if (object < node->element)
             return inTree(object, node->left);
         else

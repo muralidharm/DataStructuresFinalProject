@@ -27,6 +27,7 @@ class String{
         String& makeLowerCase();
         bool isLowerString();
         bool containsChar(const char);
+        bool containsString(const String);
         char firstChar();
         int spaceInstance();
         String secondWord();

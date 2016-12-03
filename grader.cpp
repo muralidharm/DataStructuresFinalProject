@@ -7,6 +7,7 @@ Grader::Grader()
     mainlines = 0;
     codelines = 0;
     conditionRepetition = 0;
+    functionAmount = 0;
 }
 void Grader::getLines(std::ifstream& input, String name)
 {
@@ -26,10 +27,13 @@ void Grader::getLines(std::ifstream& input, String name)
             }
             reader = reader + " ";
             reader = reader + temp;
+            //temp = temp.removePunctuation();
         }
         if (reader.spaceInstance() == 1 && !reader.containsChar('=') && reader.firstChar() != '#' && name == "main.cpp")
             variableParse(reader);
         //conditionParse(reader);
+        if (name == "main.cpp")
+            tree.inTreeString(reader);
         newVector.add(reader);
         findRepetition(reader);
         if (name == "main.cpp")
@@ -45,7 +49,7 @@ void Grader::variableParse(String var)
         if (var.containsChar(32) && !var.containsChar('.'))
         {
             //std::cout << var.secondWord() << std::endl;
-            tree.insert(var.secondWord());
+            tree.insert(var.secondWord().removePunctuation());
         }
     }
 }
@@ -65,7 +69,10 @@ void Grader::findRepetition(String s)
     String pop;
     Vector<String> stringVector;
     if (s.containsChar('{'))
+    {
         functionStack.push(s);
+        functionAmount++;
+    }
     if (!functionStack.isEmpty())
         functionStack.push(s);
     if (s.containsChar('}'))
@@ -110,6 +117,7 @@ void Grader::metric2()
     Stack<int> commentStack;
     int filecount = files.size();
     float commentScore = 0;
+    scores.add(0);
     for(int i = 0; i < filecount; i++)
     {
         int linecount = files[i].size();
@@ -127,19 +135,30 @@ void Grader::metric2()
             if (commentStack.size() > 10 && commentScore < 20)
                 commentScore += .05;
         }
-        scores.add((int)commentScore/filecount);
+        scores[1] += commentScore/filecount;
     }
 }
 void Grader::metric3()
 {
     //int hashmain = hash.returnList("main.cpp").size();
     //float mainscore = 500*(float)hash.returnList("main.cpp").size()/(float)hash.countersize();
-    float mainscore = 500*((float)mainlines/(float)codelines);
+    float mainscore = 500*((float)mainlines/((float)codelines/(float)functionAmount));
     if (mainscore <= 20)
         scores.add(mainscore);
     else
         scores.add(20);
 }
+void Grader::metric4()
+{
+    scores.add(conditionRepetition);
+}
+void Grader::metric5()
+{
+    int instances = tree.zeroInstance();
+    //score[5] = instances/variableamount
+    //std::cout << instances << std::endl;
+}
+
 int Grader::getscore()
 {
     return scores[0];

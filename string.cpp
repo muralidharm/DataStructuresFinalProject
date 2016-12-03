@@ -206,6 +206,25 @@ bool String::containsChar(const char c) //Check if a String contains another Str
     }
     return false;
 }
+bool String::containsString(const String s)
+{
+    int start = 0;
+    int end = s.size();
+    while(end <= this->size())
+    {
+        String sub = substring(start, end);
+        if (substring(start, end) == s)
+            return true;
+        else
+        {
+            start ++;
+            end ++;
+        }
+
+    }
+    return false;
+}
+
 char String::firstChar() //Returns the first character of a string- I'm using this for formatting the contents of the output file
 {
     return data[0];
@@ -241,8 +260,28 @@ String String::secondWord()
 //Removes punctuation from a string.  It's poorly written but mostly does its job.
 String String::removePunctuation()
 {
-    int length = strlen(data);
-    /*int index = 0;
+    int stringSize = strlen(data);
+    int newStringSize = 0;
+    int newCounter = 0;
+    for (int i = 0; i < stringSize; i++)
+    {
+        if((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z'))
+            newStringSize++;
+    }
+    char* newData = new char[newStringSize+1];
+    for (int i = 0; i < stringSize; i++)
+    {
+        if((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z'))
+        {
+            newData[newCounter] = data[i];
+            newCounter++;
+        }
+
+    }
+    newData[newStringSize] = '\0';
+    return String(newData);
+    /* int length = strlen(data);
+    int index = 0;
     char* newData = new char[length];
     for (int i = 0; i < length; i++)
     {
@@ -252,7 +291,7 @@ String String::removePunctuation()
             index++;
         }
     }
-    data[index] = '\0';*/
+    data[index] = '\0';
     String s = *this;
     //delete newData;
     if (length > 1)
@@ -299,7 +338,7 @@ String String::removePunctuation()
             s = s.substring(0, length-1);
     }
     }
-    return s;
+    return s;*/
 }
 
 std::ostream& operator<<(std::ostream& os, const String& s) //Overloaded extraction operator

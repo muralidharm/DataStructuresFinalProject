@@ -15,6 +15,7 @@ private:
     AvlTree<String> tree;
     Stack<String>  functionStack;
     int conditionRepetition;
+    int functionAmount;
     int codelines;
     int mainlines;
     void variableParse(String);
@@ -28,6 +29,7 @@ public:
     void metric2();
     void metric3();
     void metric4();
+    void metric5();
     int getscore();
 };
 
