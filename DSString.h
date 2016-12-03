@@ -26,18 +26,20 @@ class String{
         char* c_str();
         String& makeLowerCase();
         bool isLowerString();
-        bool containsString(const String&);
+        bool containsChar(const char);
         char firstChar();
+        int spaceInstance();
+        String secondWord();
         String removePunctuation();
 
         friend std::ostream& operator<< (std::ostream&, const String&);
         friend std::istream& operator>> (std::istream&, String&);
 
         char* data;
-    
+
         ~String();
     private:
-    
+
         void clear();
 };
 

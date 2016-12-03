@@ -1,235 +1,323 @@
+/* The Vector Class
+The Vector class should implement a standard contiguously-
+allocated, sequential list of elements.
+The class should be templated so it can hold any data type.
+A Vector class should, at the very least, include a method
+or methods for inserting elements, and an overloaded []
+operator for element lookup by index. All vectors should
+initially contain space for 10 elements and should grow at
+a rate of 1.5 times each time the capacity is reached.
+A graceful handling of out-of-bounds issues is expected.
+*/
+
 #ifndef VECTOR
 #define VECTOR
-
+#include <stdexcept>
 #include<iostream>
+
+using namespace std;
 
 template<class T>
 class Vector{
 
-  public:
+public:
+    Vector();
+    Vector(int);
+    Vector(const Vector<T>&);
 
+    void add(T);
+    void add(T, int); //pushes elements back
+    T get(int) const;
+    int getLength();
+    void set(int, T);
+    int getEmpty();
 
-      Vector(){ //Default constructor
-      vectorSize = 0;
-      cap = 10;
-      list = new T[cap];
-      }
-      Vector(int newCap){ //Constructor that takes in integer as cap- used mostly in the resize function
-      list = new T[newCap];
-      vectorSize = 0;
-      cap = newCap;
-      }
-      Vector(const Vector<T>& copyVector) //Creates a Vector based off of another Vector
-      {
-          cap = copyVector.cap;
-          vectorSize = copyVector.size();
-          list = new T[copyVector.cap];
-          for (int i = 0; i < vectorSize; i++)
-          {
-              list[i] = copyVector.list[i];
-          }
+    int size();
+    void sort();
+    void swap(int, int);
+    void replace(const Vector<T>&);
+    bool contains(T);
 
-      }
+    T& operator[](const int);
+    Vector<T>& operator=(const Vector<T>&);
+    bool operator==(const Vector<T>& rhs);
+    bool operator!=(const Vector<T>& rhs);
+    bool operator<(const Vector<T>& rhs);
+    Vector<T>& operator+=(T);
+    void clear();
 
-      void add(T newObject) //Adds object to the end of the vector
-      {
-          if (vectorSize >= cap)
-          {
-              resize();
-          }
-          list[vectorSize] = newObject;
-          vectorSize += 1;
-      }
-      void add(T newObject, int index) //Adds object at specified index
-      {
-         if (index >= cap)
-          {
-              resize();
-          }
-          vectorSize++;
-          for (int i = vectorSize-1; i >= 0; i--)
-          {
-              list[i] = list[i-1];
-          }
-          list[index] = newObject;
-          vectorSize += 1;
-      }
-      T get(int index) //Retrieves object from index number
-      {
-          if (index < cap)
-          {
-          return list[index];
-          }
-          else
-          {
-              throw "Out of range.";
-          }
-      }
-      ~Vector() //Destructor
-      {
-          delete[] list;
-      }
-      int size() const //Returns the size of the vector
-      {
-          return vectorSize;
-      }
-      void sort() //Uses bubble sort algorithm to sort objects from least to greatest
-      {
-          T swap;
-          for (int i = 0; i < vectorSize; i++)
-          {
-              for (int j = 0; j < vectorSize-1; j++)
-              {
-                  if (list[j] > list[j+1])
-                  {
-                      swap = list[j];
-                      list[j] = list[j+1];
-                      list[j+1] = swap;
-                  }
-              }
-          }
-      }
-      inline void sort(bool (comparisonFunction)(T, T)) //A sort method that takes in a function, used to solve problem with sorting pointers
-      {
-          T swap;
-          for (int i = 0; i < vectorSize; i++)
-          {
-              for (int j = 0; j < vectorSize-1; j++)
-              {
-                  if (comparisonFunction(list[j], list[j+1]))
-                  {
-                      swap = list[j];
-                      list[j] = list[j+1];
-                      list[j+1] = swap;
-                  }
-              }
-          }
-      }
+    ~Vector();
 
-      T& operator[](int index) //Retrieves object by index, SHOULD NOT BE USED FOR ASSIGNMENT
-      {
-          if (index < cap)
-          {
-          return list[index];
-          }
-          else
-          {
-              throw "Out of range.";
-          }
-      }
-      Vector<T>& operator=(Vector<T>& object) //Assignment operator using vector
-      {
-          int newSize = object.size();
-          vectorSize = object.size();
-          cap = object.cap;
-          delete[] list;
-          list = new T[object.cap];
-          for (int i = 0; i < newSize; i++)
-          {
-              list[i] = object.list[i];
-          }
-          return *this;
-      }
-      Vector<T>& operator+=(T addedObject) //Addition operator
-      {
-          if (vectorSize >= cap)
-          {
-              resize();
-          }
-          list[vectorSize] = addedObject;
-          vectorSize += 1;
-          return *this;
-      }
-      void remove(int index) //Remove object at specified index
-      {
-          for (int i = index; i < vectorSize-1; i++)
-          {
-              list[i] = list[i+1];
-          }
-          vectorSize--;
-      }
-      void removeEnd()
-      {
-          vectorSize--;
-      }
-
-      void eliminateDuplicates() //In a sorted vector, removes multiple instances of an object
-      {
-          sort();
-          //int length = vectorSize;
-          for (int i = 1; i < vectorSize; i++)
-          {
-             if (list[i] == list[i-1])
-             {
-                 remove(i);
-                 i--;
-                //length --;
-             }
-          }
-      }
-      bool contains(T object) //Returns true if the object in in the Vector, otherwise returns false
-      {
-          sort();
-          int left = 0;
-          int right = vectorSize-1;
-          int mid;
-          while (left <= right)
-          {
-              mid =(int)((left+right)/2);
-              if (object == list[mid])
-                  return true;
-              else if (object > list[mid])
-                  left = mid + 1;
-              else
-                  right = mid - 1;
-          }
-          return false;
-      }
-      bool linearContains(T object)
-      {
-          for (int i = 0; i < vectorSize; i++)
-          {
-              if (list[i] == object)
-                   return true;
-          }
-          return false;
-      }
-      int smallestIndex()
-      {
-          int index = 0;
-          for (int i = 1; i < vectorSize; i++)
-          {
-              if (list[i] < list[index])
-              {
-                  index = i;
-              }
-          }
-          return index;
-      }
-      T& lastElement()
-      {
-          return list[vectorSize-1];
-      }
-  private:
-
-      void resize() //Resizes array, called when vectorSize exceeds cap
-      {
-
-          float newcap = 1.5*(float)cap;
-          cap = (int)newcap;
-          T* newList = new T[cap];
-          for (int i = 0; i < vectorSize; i++)
-          {
-              newList[i] = list[i];
-          }
-          delete [] list;
-          list = newList;
-      }
-
-      T* list; //List of objects of type T
-      int vectorSize; //Keeps track of how many objects are in the vector.  Is incremented in addition functions
-      int cap; //Actual size of list, increases each time vectorSize exceeds it
-
+private:
+    void resize();
+    int length;
+    int cap;
+    T* list;
+    int BASE_CAPACITY = 150;
 };
+
+
+
+template<class T>
+Vector<T>::Vector()
+{
+    length=0;
+    cap=BASE_CAPACITY;
+    this->list=new T[cap];
+}
+
+template<class T>
+Vector<T>::Vector(int digit)        //creates a Vector with capacity digit
+{
+    cap=digit;
+    length=0;
+    this->list=new T[cap];
+}
+
+template<class T>
+Vector<T>::Vector(const Vector<T>& rhs)     //creates a Vector the same capacity and length as rhs containing same data in list
+{
+    cap = rhs.cap;
+    length = rhs.length;
+    this->list=new T[rhs.cap];
+    for (int i = 0; i < length; i++)
+    {
+        list[ i ] = rhs.get(i);
+    }
+}
+
+template<class T>
+void Vector<T>::add(T rhs)      //adds rhs to end of the Vector, resizing if necessary
+{
+    if (length>=cap)
+    {
+        resize();
+    }
+    list[length]=rhs;
+    length++;
+}
+
+
+template<class T>
+void Vector<T>::add(T rhs, int index)   //adds rhs at index 'index' of the Vector, resizing and shiting data if necessary
+{
+    if (length==cap)
+    {
+        resize();
+    }
+    if (index<length and index >= 0)
+    {
+        for (int i=length; i>index; i--)
+        {
+            list[i]=list[i-1];
+        }
+        list[index]=rhs;
+        length++;
+    }
+    else if (index==length)
+    {
+        list[index]=rhs;
+        length++;
+    }
+    else                                        //greater than length
+    {
+        //throw std::out_of_range("Out of range"); AVOIDED USING std
+        cerr << "Oops. Index is out of range" << endl;
+    }
+}
+
+
+template<class T>
+T Vector<T>::get(int index) const
+{
+    return list[index];
+}
+
+template<class T>
+int Vector<T>::getLength()
+{
+    return length;
+}
+
+template<class T>
+void Vector<T>::set(int index, T rhs)
+{
+    if (index>=length)
+        return;
+    list[index]=rhs;
+}
+
+template<class T>
+int Vector<T>::size()
+{
+    return cap;
+}
+
+template<class T>
+void Vector<T>::sort()              //sorts items in Vector ascendingly regarding of type
+{
+    T min;
+    int count=size();
+    for (int a=1; a<count; a++)
+    {
+        for (int b=count-1; b>=a; b--)
+        {
+            if (list[b-1] > list[b])
+            {
+                min = list[b-1];
+                list[b-1] = list[b];
+                list[b]=min;
+            }
+        }
+    }
+}
+
+template<class T>
+void Vector<T>::swap(int first, int second)
+{
+    T temp=list[first];
+    list[first]=list[second];
+    list[second]=temp;
+}
+
+template<class T>
+T& Vector<T>::operator[](int index)
+{
+    if (index>=0 and index<cap)
+    {
+        return list[index];
+    }
+    else
+    {
+        cerr << "Oops. Can't go to index " << index << ". Needs to be 0..." << length << endl;
+        return list[0];
+    }
+
+}
+
+template<class T>
+void Vector<T>::replace(const Vector<T>& rhs)
+{
+    if(&rhs != this) {  // Avoids copying yourself.
+        delete[] list;
+        length = rhs.length;
+        cap = rhs.cap;
+        list = new T[cap];
+        for (int i=0; i<length; i++)
+            list[i] = rhs.list[i];
+    }
+}
+
+template<class T>
+bool Vector<T>::contains(T rhs)
+{
+    for (int i=0; i<length; i++)
+    {
+        if (list[i]==rhs)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+template<class T>
+Vector<T>& Vector<T>::operator=(const Vector<T>& rhs)
+{
+    if(&rhs != this) {  // Avoids copying yourself.
+        delete[] list;
+        length = rhs.length;
+        cap = rhs.cap;
+        list = new T[cap];
+        for (int i=0; i<length; i++)
+            list[i] = rhs.list[i];
+    }
+    return *this;
+}
+
+template<class T>
+bool Vector<T>::operator==(const Vector<T>& rhs)
+{
+    if (length != rhs.length)
+        return false;
+    for (int i=0; i<length; i++)
+    {
+        if (list[i]!=rhs.get(i))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+template<class T>
+bool Vector<T>::operator!=(const Vector<T>& rhs)
+{
+    return !(operator==(rhs));
+}
+
+template<class T>
+bool Vector<T>::operator<(const Vector<T>& rhs)
+{
+    bool solution = false;
+    if (list[0] < rhs.list[0])
+    {
+        solution = true;
+    }
+    if (list[0] == rhs.list[0])
+    {
+        solution = (list[1]==rhs.list[1]);
+    }
+    return solution;
+}
+
+template<class T>
+Vector<T>& Vector<T>::operator+=(T rhs)
+{
+    if (length==cap)
+    {
+        resize();
+    }
+    add(rhs);
+    return *this;
+}
+
+
+template<class T>
+int Vector<T>::getEmpty()
+{
+    return cap-length;
+}
+
+template<class T>
+void Vector<T>::resize()
+{
+    int newCap=int(cap * 1.5);
+
+    T* tempPtr = new T[newCap];
+    for (int i=0; i<length; i++)
+    {
+        tempPtr[i] = list[i];
+    }
+    delete[] list;
+    list = tempPtr;
+    cap=newCap;
+}
+
+template<class T>
+void Vector<T>::clear()
+{
+    for (int i=0; i<cap; i++)
+    {
+        list[i].clear();
+    }
+}
+
+template<class T>
+Vector<T>::~Vector()
+{
+    delete[] list;
+}
 
 #endif
