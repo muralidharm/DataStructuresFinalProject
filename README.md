@@ -43,3 +43,80 @@ Analysis
 I. Source Code
 II. Source Code
 III. Source Code
+
+
+OUTPUT
+
+Final Project Verbose Output
+
+General
+•	___ (name of code base)
+•	Overall Score: /100, _________
+•	The code base contained ___ files.
+
+Metrics
+I. Metric to Assess the Length of Each Line of Code
+•	Metric I Score: ___/20
+•	Good coding standards propose that no lines be longer than eighty characters. This code base contained ___ lines over eighty characters out of its total ___ lines. 
+•	The score represents the ratio of the lines over eighty characters to the total number of lines in the file and multiplying this fraction by the total possible 20 points. 
+•	Below a detailed report of the number of lines over eighty characters in each file is displayed.
+o	File ___ received a ___/20.
+o	The file contained ___ lines over eighty characters out of its total ___ lines.
+II. Metric to Assess the Quality of Comments
+•	Metric II Score: ___/20
+o	___ commented with ___ comments (too many/few).
+o	The project contained ___ lines of commented code and ___ lines of uncommented code.
+•	Properly formatted source code contains an informative number of comments to help other programmers better understand the code. A score of ___ represents a ___ well commented source code. 
+•	Below a detailed report of the scores for each file is displayed.
+o	File ___ received a ___/20.
+o	The source code is ___ commented, with ___ comments (too many/few).
+o	The file contained ___ lines of commented code and ___ lines of uncommented code.
+•	***NOT DISPLAYED***
+o	Well: 0-6
+♣	This source code exhibited an informative number of comments for useful interpretation of the code.
+o	Too Many -- Poorly: 13-20
+♣	This source code either exhibited much too many comments for useful interpretation of the code.
+o	Too Many -- Moderately-well: 7-12
+♣	This source code either exhibited slightly too many comment for useful interpretation of the code.
+o	Too Few -- Poorly: 13-20
+♣	This source code either exhibited much too few comments for useful interpretation of the code.
+o	Too Few -- Moderately-well: 7-12
+♣	This source code either exhibited slightly too few comments for useful interpretation of the code.
+ III. Metric to Assess the Length of Main File Relative to Average Function Size
+•	Metric III Score: ___/20
+•	In good coding practice, the main.cpp file should be a relatively concise file which utilizes additional classes to perform most of the logic of the program.
+IV. Metric to Assess Repetition Control Statements within Code Blocks
+•	Metric IV Score: ___/20
+•	In good coding practice, specific control statements such as for loop and while loops are not repeated multiple times in the same block of code. This code base exhibited ___ instances of control statement repetition within code blocks.
+•	Below a detailed report of the scores for each file is displayed.
+o	File ___ received a ___/20.
+o	This file exhibited ___ instances of control statement repetition within code blocks.
+•	The following lines of code were repeated within the same function block:
+o	___ in the ___ file
+V. Metric to Assess the Number of Instances of Identifier Names
+•	Metric V Score: ___/20
+•	In good coding practice, declared variables are used at least once and preferably several times in the project. There were ___ variables declared and not utilized in the code base, and ___ variables declared and utilized fewer than three times in the code base.
+•	Below a detailed report of the scores for each file is displayed.
+o	File ___ received a ___/20.
+o	___ variables that were declared and not utilized in the code base.
+o	___ variables that were declared and utilized fewer than three times in the code base.
+VI. Bonus Metric to Assess Existence of Control Statements	
+•	Metric VI Score: ___/-5
+o	This code base exhibited ___ instances of control statements.
+o	This code base exhibits ___ complexity.
+•	Since more complex code will contain more control statements, this metric subtracts points as more control statements are found in the source code as a means of giving especially complex code bases lower scores than equally well-formatted code bases of simpler complexity.
+•	Below a detailed report of the scores for each file is displayed.
+o	File ___ received a ___/-5.
+•	***NOT DISPLAYED***
+o	Very High: -5
+♣	This source code exhibited a very high level of complexity with a large number of control statements for the ***.
+o	High: -4
+♣	This source code exhibited a high level of complexity with a large number of control statements for the ***.
+o	Moderately High: -3
+♣	This source code exhibited a moderately high level of complexity with a large number of control statements for the ***.
+o	Moderate: -2
+♣	This source code exhibited a moderate level of complexity with a large number of control statements for the ***.
+o	: -1
+♣	This source code exhibited a *** level of complexity with a large number of control statements for the ***.
+
+
