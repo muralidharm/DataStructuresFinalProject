@@ -116,6 +116,7 @@ void Grader::findRepetition(String s)
                stringVector.add(pop);
         }
         functionSize.add(stringVector.size());
+        stringVector = Vector<String>();
     }
 
 }
@@ -131,7 +132,7 @@ int Grader::averageFunctionSize()
     {
         average += functionSize[i];
     }
-    return (average/(size*files.getLength()));
+    return average/size;
 }
 
 void Grader::metric1()
@@ -182,9 +183,14 @@ void Grader::metric2()
             if (commentStack.size() > 10)
                 tooMany++;
         }
-        tooFew /= 15;
+
     }
-    if ((tooFew+tooMany)*.1 > 20)
+    tooFew /= 15;
+    if (tooFew == 0)
+        scores.add(5);
+    else if ((tooMany == 0) && tooFew >= 1)
+        scores.add(20);
+    else if ((tooFew+tooMany)*.1 > 20)
         scores.add(20);
     else
         scores.add((tooFew+tooMany)*.1);
