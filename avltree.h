@@ -63,13 +63,17 @@ public:
     {
         return inTree(object, root);
     }
-    bool inTreeString(String object)
+    void inTreeString(String object)
     {
-        return inTreeString(object, root);
+        inTreeString(object, root);
     }
     int zeroInstance()
     {
         return zeroInstance(root);
+    }
+    int threeInstance()
+    {
+        return threeInstance(root);
     }
 
     //Returns reference to object in tree
@@ -169,16 +173,14 @@ private:
             return findMax(node->right);
     }
 
-    bool inTreeString(String object, AvlNode* node)
+    void inTreeString(String object, AvlNode* node)
     {
-        if (node == nullptr)
-            return false;
-        else if (typeid(T) == typeid(String))
+        if (node != nullptr && typeid(T) == typeid(String))
         {
             if (object.containsString(node->element))
                 node->instance++;
-            else
-                return(inTreeString(object,node->left) && inTreeString(object, node->right));
+            inTreeString(object,node->left);
+            inTreeString(object, node->right);
         }
     }
     int zeroInstance(AvlNode * node)
@@ -190,7 +192,15 @@ private:
         else
             return 0 + zeroInstance(node->left) + zeroInstance(node->right);
     }
-
+    int threeInstance(AvlNode * node)
+    {
+        if (node == nullptr)
+            return 0;
+        else if (node->instance < 3)
+            return 1 + threeInstance(node->left) + threeInstance(node->right);
+        else
+            return 0 + threeInstance(node->left) + threeInstance(node->right);
+    }
     bool inTree(T object, AvlNode * node)
     {
         if (node == nullptr)

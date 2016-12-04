@@ -145,12 +145,16 @@ void HashTable<K,V>::addNode(K key, V value)
     HashNode<K,V> entry(key, value);
     K rhsK = entry.getKey();
     int hashValue = hashFunc(rhsK);
-    int keysize = nodes[hashValue].size();
-    for(int i = 0; i < keysize; i++)
+    if(!nodes[hashValue].isEmpty())
     {
-        if (nodes[hashValue].get(i).getValue() == value)
-            repetition++;
-        break;
+        while(!(nodes[hashValue].getFront()->getData().getKey() == key))
+        {
+            if(hashValue > 150)
+                hashValue = 0;
+            hashValue++;
+            if(nodes[hashValue].isEmpty())
+                break;
+        }
     }
     nodes[hashValue].add(entry);
     counter++;

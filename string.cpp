@@ -263,15 +263,21 @@ String String::removePunctuation()
     int stringSize = strlen(data);
     int newStringSize = 0;
     int newCounter = 0;
+    bool parenthesesCond = false;
     for (int i = 0; i < stringSize; i++)
     {
         if((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z'))
             newStringSize++;
+        if(data[i] == '(' )
+        {
+            parenthesesCond = true;
+            break;
+        }
     }
     char* newData = new char[newStringSize+1];
     for (int i = 0; i < stringSize; i++)
     {
-        if((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z'))
+        if(((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z')) && (i < newStringSize || !parenthesesCond))
         {
             newData[newCounter] = data[i];
             newCounter++;
@@ -340,7 +346,23 @@ String String::removePunctuation()
     }
     return s;*/
 }
-
+bool String::isCFile()
+{
+    int stringSize = strlen(data);
+    String s = substring(stringSize-3, stringSize);
+    if (substring(stringSize-4, stringSize) == ".hpp")
+        return true;
+    else if (substring(stringSize-4, stringSize) == ".cpp")
+        return true;
+    else if (substring(stringSize-2, stringSize) == ".c")
+        return true;
+    else if (substring(stringSize-2, stringSize) == ".h")
+        return true;
+     else if (substring(stringSize-3, stringSize) == ".cc")
+        return true;
+    else
+        return false;
+}
 std::ostream& operator<<(std::ostream& os, const String& s) //Overloaded extraction operator
 {
     os << s.data;
