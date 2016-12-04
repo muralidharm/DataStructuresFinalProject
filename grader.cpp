@@ -151,12 +151,12 @@ void Grader::metric1()
                 exceedschars++;
             }
         }
-        charscore += ((exceedschars/linecount))*20;
+        charscore += ((exceedschars/linecount)+.25)*20;
     }
     if (charscore == 0)
         scores.add(0);
     else
-        scores.add((charscore/filecount+.25));
+        scores.add((charscore/filecount));
 }
 void Grader::metric2()
 {
