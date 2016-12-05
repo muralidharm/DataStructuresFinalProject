@@ -156,8 +156,8 @@ void Grader::metric1(std::fstream& output)
         }
         else
         {
-            charscore += ((exceedschars/linecount)+.25)*20;
-            fileScores.add(((exceedschars/linecount)+.25)*20);
+            charscore += ((exceedschars/linecount)*2)*20;
+            fileScores.add(((exceedschars/linecount)*2)*20);
         }
 
         totalexceedschars += exceedschars;
@@ -302,7 +302,7 @@ void Grader::metric3(std::fstream& output)
     else
     {
 
-        if ((1-mainscore)*20 <= 20)
+        if ((mainscore-1)*20 <= 20)
             scores.add(mainscore);
         else
             scores.add(20);
@@ -360,7 +360,7 @@ void Grader::metric4(std::fstream& output)
             temp = ((1000-linesPerRep)/1000);
         else
             temp = 0;
-        scores.add((conditionRepetition/averageFunctionSize())*10+(temp*10));
+        scores.add((conditionRepetition/averageFunctionSize())*10+(temp*10)+(conditionRepetition*3));
     }
     output << "________________________________________________________________" << std::endl;
     output << '\n';
@@ -433,7 +433,16 @@ void Grader::metric5(std::fstream& output)
     output << " once and preferably several times in the project. " << std::endl;
     output << " There were " << totalZeros << " variables declared and not utilized in the code base, " << std::endl;
     output << " and " << totalThrees << " variables declared and utilized fewer than three times in the code base. " << std::endl;
-    output << " In addition, the average variable length name was " << averageVar << ", which is a ___ average length." << std::endl;
+    output << " In addition, the average variable length name was " << averageVar << ", which is a ";
+    if (averageVar > 10)
+        output << "very high ";
+    else if (averageVar >= 7)
+        output << "high ";
+    else if (averageVar >= 5)
+        output << "normal ";
+    else
+        output << "short ";
+    output << "average length." << std::endl;
     output << "Below a detailed report of the scores for each file is displayed." << std::endl;
     for(int i = 0; i < files.getLength(); i++)
         {
