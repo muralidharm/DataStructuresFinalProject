@@ -329,7 +329,7 @@ void Grader::metric3(std::fstream& output)
         scores.add(totalScore);
     output << "________________________________________________________________" << std::endl;
     output << '\n';
-    output << "Metric III Score: "<< scores[2] << "/20" << std::endl;
+    output << "Metric III Score: " << scores[2] << "/20" << std::endl;
     if (analysis[1] == 'v')
     {
     output << " " << mainlines << " lines in main" << std::endl;
@@ -370,6 +370,20 @@ void Grader::metric3(std::fstream& output)
         output << " to the average function size of the code base." << std::endl;
 
     }
+    output << "In good coding practice, the main.cpp file should be a relatively concise file which utilizes additional " << std::endl;
+    output << "classes to perform most of the logic of the program. In addition, good coding practice entails keeping " << std::endl;
+    output << "functions short enough to fit on one screen. This source code exhibited " << overThirty << " functions that wouldn’t fit on " << std::endl;
+    output << "one screen, which is ";
+    if (overThirty >= 10)
+        output << "very high";
+    else if (overThirty >= 5)
+        output << "high";
+    else if (overThirty >= 3)
+        output << "moderately high";
+    else if (overThirty >= 1)
+        output << "typical";
+    else
+        output << "great";
     }
 }
 void Grader::metric4(std::fstream& output)
@@ -470,9 +484,11 @@ void Grader::metric5(std::fstream& output)
     for(int i = 0; i < files.getLength(); i++)
         {
             output << "     File " << files[i] << " received a "<< fileScores[i] << "/20." << std::endl;
-
-            output << "     " << zeroInstanceVars[i] << " variables that were declared and not utilized in the code base." << std::endl;
-            output << "     " << threeInstanceVars[i] << " variables that were declared and utilized fewer than three times in the code base." << std::endl;
+            if (zeroInstanceVars[i] > 0 || threeInstanceVars[i] > 0)
+            {
+                output << "     " << zeroInstanceVars[i] << " variables that were declared and not utilized in the code base." << std::endl;
+                output << "     " << threeInstanceVars[i] << " variables that were declared and utilized fewer than three times in the code base." << std::endl;
+            }
         }
     }
 
