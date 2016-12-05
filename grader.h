@@ -10,6 +10,7 @@
 class Grader {
 private:
     Vector<int> scores;
+    char* analysis;
     Vector<int> functionSize;
     int varAmount;
     int varSize;
@@ -17,25 +18,29 @@ private:
     HashTable<String, String> hash;
     AvlTree<String> tree;
     Stack<String>  functionStack;
+    Vector<String> repeatedLines;
+    Vector<int> zeroInstanceVars;
+    Vector<int> threeInstanceVars;
     int conditionRepetition;
     int functionAmount;
     int codelines;
     int mainlines;
     void variableParse(String);
     void conditionParse(String);
-    void findRepetition(String);
+    void findRepetition(String, String);
     bool isControlStatement(String);
 public:
-    Grader();
+    Grader(char*);
     void getLines(std::ifstream&, String);
     void openDirectories(String);
     int averageFunctionSize();
-    void metric1();
-    void metric2();
-    void metric3();
-    void metric4();
-    void metric5();
-    int getscore();
+    void metric1(std::fstream&);
+    void metric2(std::fstream&);
+    void metric3(std::fstream&);
+    void metric4(std::fstream&);
+    void metric5(std::fstream&);
+    String getBaseName(String);
+    void getscore(std::ofstream&, String);
 };
 
 #endif // GRADER

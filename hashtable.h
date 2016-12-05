@@ -149,11 +149,14 @@ void HashTable<K,V>::addNode(K key, V value)
     {
         while(!(nodes[hashValue].getFront()->getData().getKey() == key))
         {
-            if(hashValue > 150)
+            if(hashValue >= 149)
                 hashValue = 0;
-            hashValue++;
-            if(nodes[hashValue].isEmpty())
-                break;
+            else
+            {
+                hashValue++;
+                if(nodes[hashValue].isEmpty())
+                    break;
+            }
         }
     }
     nodes[hashValue].add(entry);

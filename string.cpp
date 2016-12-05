@@ -243,10 +243,10 @@ int String::spaceInstance()
 String String::secondWord()
 {
     int length = strlen(data);
-    int newsize = 0;
-    for (int i = 0; i < length; i++)
+    int newsize = length;
+    for (int i = length-1; i >= 0; i--)
     {
-        newsize++;
+        newsize--;
         if (data[i] == 32)
             break;
     }
@@ -263,21 +263,19 @@ String String::removePunctuation()
     int stringSize = strlen(data);
     int newStringSize = 0;
     int newCounter = 0;
-    bool parenthesesCond = false;
     for (int i = 0; i < stringSize; i++)
     {
         if((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z'))
             newStringSize++;
-        if(data[i] == '(' )
+        if(data[i] == '(' || data[i] == '[' )
         {
-            parenthesesCond = true;
             break;
         }
     }
     char* newData = new char[newStringSize+1];
-    for (int i = 0; i < stringSize; i++)
+    for (int i = 0; i <= stringSize; i++)
     {
-        if(((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z')) && (i < newStringSize || !parenthesesCond))
+        if(((data[i] >= 'a' && data[i] <= 'z') || (data[i] >= 'A' && data[i] <= 'Z')) && (newCounter <= newStringSize))
         {
             newData[newCounter] = data[i];
             newCounter++;
