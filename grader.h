@@ -23,13 +23,13 @@ private:
     Vector<int> threeInstanceVars;
     int conditionRepetition;
     int functionAmount;
-    int codelines;
     int mainlines;
     void variableParse(String);
     void conditionParse(String);
     void findRepetition(String, String);
     bool isControlStatement(String);
 public:
+    int codelines;
     Grader(char*);
     void getLines(std::ifstream&, String);
     void openDirectories(String);

@@ -368,7 +368,7 @@ std::ostream& operator<<(std::ostream& os, const String& s) //Overloaded extract
 }
 std::istream& operator>>(std::istream& is, String& s) //Overloaded insertion operator- using to read in data from file
 {
-    char temp[80] = "";
+    char temp[500] = "";
         is >> temp;
 
         if (s.data) delete[] s.data;

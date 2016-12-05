@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.5.0, 2016-12-05T10:07:22. -->
+<!-- Written by QtCreator 3.5.0, 2016-12-05T11:34:51. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -241,7 +241,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">DSFinal</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/ds/workspace/DSFinal/DSFinal.pro</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">//home/ds/workspace/FlightPlanner -v output.txt</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">//home/ds/workspace/Sieve -v output.txt</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">DSFinal.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseTerminal">true</value>

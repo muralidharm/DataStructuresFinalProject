@@ -152,18 +152,25 @@ void Grader::metric1(std::fstream& output)
         if (exceedschars == 0)
         {
             charscore += ((exceedschars/linecount))*20;
-            fileScores.add(((exceedschars/linecount))*20);
+            if (((exceedschars/linecount))*20 >= 20)
+                fileScores.add(20);
+            else
+                fileScores.add(((exceedschars/linecount))*20);
         }
         else
         {
             charscore += ((exceedschars/linecount)*2)*20;
-            fileScores.add(((exceedschars/linecount)*2)*20);
+            if (((exceedschars/linecount)*2)*20 >= 20)
+                fileScores.add(20);
+            else
+                fileScores.add(((exceedschars/linecount)*2)*20);
         }
 
         totalexceedschars += exceedschars;
         fileExceeds.add(exceedschars);
     }
-    scores.add((charscore/filecount));
+    float newScore = (((float)totalexceedschars/(float)hash.countersize())*2)*20;
+    scores.add(newScore);
     output << "________________________________________________________________" << std::endl;
     output << '\n';
     output <<"Metric I Score: " << scores[0] << "/20." << std::endl;
@@ -176,7 +183,8 @@ void Grader::metric1(std::fstream& output)
         output << " Below a detailed report of the number of lines over eighty characters in each file is displayed. " << std::endl;
         for (int i = 0; i < files.getLength(); i++)
         {
-            output << "     File " << files[i] << " received a " << fileScores[i] << "/20.The file contained "<< fileExceeds[i] << " lines over eighty characters out of its total " << hash.returnList(files[i]).size() << " lines." << std::endl;
+            if(fileExceeds[i] >= 1)
+                output << "     File " << files[i] << " received a " << fileScores[i] << "/20.The file contained "<< fileExceeds[i] << " lines over eighty characters out of its total " << hash.returnList(files[i]).size() << " lines." << std::endl;
         }
     }
 
@@ -292,21 +300,33 @@ void Grader::metric2(std::fstream& output)
 }
 void Grader::metric3(std::fstream& output)
 {
-
+    int totalScore = 0;
+    int overThirty = 0;
+    for (int i = 0; i < functionSize.getLength(); i++)
+    {
+        if (functionSize[i])
+            overThirty ++;
+    }
+    totalScore += (overThirty/functionAmount)*6;
     float mainscore = (float)mainlines;
     mainscore /= averageFunctionSize();
     if (mainlines == 0)
-        scores.add(0);
+        totalScore += 0;
     else if (mainscore <= 1)
-        scores.add(0);
+        totalScore += 0;
     else
     {
 
-        if ((mainscore-1)*20 <= 20)
-            scores.add(mainscore);
+        if ((mainscore-1)*12 <= 12)
+            totalScore += (mainscore-1)*12;
         else
-            scores.add(20);
+            totalScore += 12;
     }
+    totalScore += (mainlines/hash.countersize())*5;
+    if (totalScore > 20)
+        scores.add(20);
+    else
+        scores.add(totalScore);
     output << "________________________________________________________________" << std::endl;
     output << '\n';
     output << "Metric III Score: "<< scores[2] << "/20" << std::endl;
@@ -317,6 +337,10 @@ void Grader::metric3(std::fstream& output)
     output << " " << hash.countersize()-mainlines << " lines in rest of project" << std::endl;
 
     output << " " << functionAmount << " functions in project" << std::endl;
+
+    output << " Average function length: " << averageFunctionSize() << std::endl;
+
+    output << " " << overThirty << " functions over thirty lines" << std::endl;
 
     output << " In good coding practice, the main.cpp file should be a relatively concise file which " << std::endl;
     output << " utilizes additional classes to perform most of the logic of the program." <<std::endl;
@@ -388,19 +412,18 @@ void Grader::metric5(std::fstream& output)
     {
     int zeroInstances = zeroInstanceVars[i];
     int threeInstances = threeInstanceVars[i];
-    int temp;
-    int timesL3;
+    float temp;
+    temp =(float)(averageVar-4)/4;
+    if (temp < 0)
+        temp = 0;
+    else if (temp > 1)
+        temp = 1;
+    float timesL3;
     if (threeInstances != 0)
-        timesL3 = varAmount/threeInstances;
+        timesL3 = (threeInstances/varAmount)*3;
     else
         timesL3 = 0;
-    if (timesL3 < 2000)
-    {
-        temp = (2000-timesL3)/2000;
-    }
-    else
-        temp = 0;
-    int score = ((averageVar/30)*5) + (zeroInstances*3) + (temp*7.5);
+    int score = temp*5 + (zeroInstances*3) + (timesL3*7.5);
     if (score < 20)
         fileScores.add(score);
     else

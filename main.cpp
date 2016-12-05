@@ -15,6 +15,10 @@ int main(int argc, char* const argv[] )
     output.open(argv[3]);
     grader.openDirectories(path);
     output << "STATIC CODE ANALYZER" << std::endl;
+    if (grader.codelines == 0)
+    {
+        throw "File not found.";
+    }
     grader.metric1(output1);
     grader.metric2(output1);
     grader.metric3(output1);
